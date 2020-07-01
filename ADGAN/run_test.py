@@ -5,6 +5,7 @@ from ADGAN.data.data_loader import CreateDataLoader
 from ADGAN.models.models import create_model
 from ADGAN.util.visualizer import Visualizer
 from ADGAN.util import html
+from ADGAN.util import util
 import time
 
 def run():
@@ -32,10 +33,10 @@ def run():
     opt.resize_or_crop = 'no'
     opt.gpu_ids = 0,
     opt.BP_input_nc = 18
-    #opt.no_flip = True
+    opt.SP_input_nc = 8
     opt.which_model_netG = 'ADGen'
     opt.which_epoch = 800
-    opt.SP_input_nc = 8
+    opt.how_many = 10
 
     data_loader = CreateDataLoader(opt)
     dataset = data_loader.load_data()
@@ -46,18 +47,15 @@ def run():
 
     webpage = html.HTML(web_dir, 'Experiment = %s, Phase = %s, Epoch = %s' % (opt.name, opt.phase, opt.which_epoch))
 
-    print(opt.how_many)
-    print(len(dataset))
+    printArgs(opt)
 
     model = model.eval()
-    print(model.training)
 
-    opt.how_many = 999999
+    print('dataset:', len(dataset), ', how_many:', opt.how_many, 'model.training:', model.training)
     # test
     for i, data in enumerate(dataset):
-        print(' process %d/%d img ..'%(i,opt.how_many))
-        if i >= opt.how_many:
-            break
+        print(' process {}/{} img ..'.format(i,len(dataset)))
+
         model.set_input(data)
         startTime = time.time()
         model.test()
@@ -70,3 +68,21 @@ def run():
         visualizer.save_images(webpage, visuals, img_path)
 
     webpage.save()
+
+def printArgs(opt):
+    args = vars(opt)
+
+    print('------------ Options -------------')
+    for k, v in sorted(args.items()):
+        print('%s: %s' % (str(k), str(v)))
+    print('-------------- End ----------------')
+
+    # save to the disk
+    expr_dir = os.path.join(opt.checkpoints_dir, opt.name)
+    util.mkdirs(expr_dir)
+    file_name = os.path.join(expr_dir, 'opt.txt')
+    with open(file_name, 'wt') as opt_file:
+        opt_file.write('------------ Options -------------\n')
+        for k, v in sorted(args.items()):
+            opt_file.write('%s: %s\n' % (str(k), str(v)))
+        opt_file.write('-------------- End ----------------\n')

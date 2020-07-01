@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.ndimage.filters import gaussian_filter
-from skimage.draw import circle, line_aa, polygon
+#from skimage.draw import circle, line_aa, polygon
+import skimage
 import json
 
 import matplotlib
@@ -69,14 +70,14 @@ def draw_pose_from_cords(pose_joints, img_size, radius=2, draw_joints=True):
             to_missing = pose_joints[t][0] == MISSING_VALUE or pose_joints[t][1] == MISSING_VALUE
             if from_missing or to_missing:
                 continue
-            yy, xx, val = line_aa(pose_joints[f][0], pose_joints[f][1], pose_joints[t][0], pose_joints[t][1])
+            yy, xx, val = draw.line_aa(pose_joints[f][0], pose_joints[f][1], pose_joints[t][0], pose_joints[t][1])
             colors[yy, xx] = np.expand_dims(val, 1) * 255
             mask[yy, xx] = True
 
     for i, joint in enumerate(pose_joints):
         if pose_joints[i][0] == MISSING_VALUE or pose_joints[i][1] == MISSING_VALUE:
             continue
-        yy, xx = circle(joint[0], joint[1], radius=radius, shape=img_size)
+        yy, xx = draw.circle(joint[0], joint[1], radius=radius, shape=img_size)
         colors[yy, xx] = COLORS[i]
         mask[yy, xx] = True
 
@@ -129,13 +130,13 @@ def produce_ma_mask(kp_array, img_size, point_radius=4):
             kp_array[t] - norm_vec,
             kp_array[t] + norm_vec
         ])
-        yy, xx = polygon(vetexes[:, 0], vetexes[:, 1], shape=img_size)
+        yy, xx = draw.polygon(vetexes[:, 0], vetexes[:, 1], shape=img_size)
         mask[yy, xx] = True
 
     for i, joint in enumerate(kp_array):
         if kp_array[i][0] == MISSING_VALUE or kp_array[i][1] == MISSING_VALUE:
             continue
-        yy, xx = circle(joint[0], joint[1], radius=point_radius, shape=img_size)
+        yy, xx = draw.circle(joint[0], joint[1], radius=point_radius, shape=img_size)
         mask[yy, xx] = True
 
     mask = dilation(mask, square(5))

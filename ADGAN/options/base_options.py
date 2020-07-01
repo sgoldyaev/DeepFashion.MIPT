@@ -32,7 +32,7 @@ class BaseOptions():
         self.parser.add_argument('--norm', type=str, default='instance', help='instance normalization or batch normalization')
         self.parser.add_argument('--serial_batches', action='store_true', help='if true, takes images in order to make batches, otherwise takes them randomly')
         self.parser.add_argument('--display_winsize', type=int, default=256,  help='display window size')
-        self.parser.add_argument('--display_id', type=int, default=1, help='window id of the web display')
+        self.parser.add_argument('--display_id', type=int, default=0, help='window id of the web display')
         self.parser.add_argument('--display_port', type=int, default=8097, help='visdom port of the web display')
         self.parser.add_argument('--no_dropout', action='store_true', help='no dropout for the generator')
         self.parser.add_argument('--max_dataset_size', type=int, default=float("inf"), help='Maximum number of samples allowed per dataset. If the dataset directory contains more than max_dataset_size, only a subset is loaded.')
@@ -76,6 +76,9 @@ class BaseOptions():
         if len(self.opt.gpu_ids) > 0:
             torch.cuda.set_device(self.opt.gpu_ids[0])
 
+        return self.opt
+
+    def printArgs(self):
         args = vars(self.opt)
 
         print('------------ Options -------------')
@@ -92,4 +95,3 @@ class BaseOptions():
             for k, v in sorted(args.items()):
                 opt_file.write('%s: %s\n' % (str(k), str(v)))
             opt_file.write('-------------- End ----------------\n')
-        return self.opt

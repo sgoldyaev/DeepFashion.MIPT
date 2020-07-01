@@ -158,7 +158,7 @@ def define_G(input_nc, output_nc, ngf, which_model_netG, norm='batch', use_dropo
     if len(gpu_ids) > 1:
         netG = torch.nn.DataParallel(netG, device_ids=gpu_ids)
     netG.cuda()
-    init_weights(netG, init_type=init_type)
+    #init_weights(netG, init_type=init_type)
     return netG
 
 

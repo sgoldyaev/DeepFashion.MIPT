@@ -3,8 +3,8 @@ import numpy as np
 #from sklearn.model_selection import train_test_split
 
 # path for downloaded fashion images
-root_fashion_dir = 'C:\\git\\DeepFashion.MIPT\\deepfashion\\fashion'
-output_fashion_dir = 'C:\\git\\DeepFashion.MIPT\\deepfashion\\fashion_resize'
+root_fashion_dir = './deepfashion/fashion'
+output_fashion_dir = './deepfashion/fashion_resize'
 assert len(root_fashion_dir) > 0, 'please give the path of raw deep fashion dataset!'
 
 input_images = {}

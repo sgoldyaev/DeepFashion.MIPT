@@ -40,7 +40,7 @@ def make_pairs(df):
     df['person'] = persons
     fr, to = [], []
     for person in pd.unique(persons):
-        pairs = zip(*list(permutations(df[df['person'] == person]['name'], 2)))
+        pairs = list(zip(*list(permutations(df[df['person'] == person]['name'], 2))))
         if len(pairs) != 0:
             fr += list(pairs[0])
             to += list(pairs[1])
@@ -52,19 +52,19 @@ def make_pairs(df):
 
 if __name__ == "__main__":
     images_for_test = 12000
-    dir ='/mnt/cephfs/common/lab/menyifang/projects/refCode/Pose-Transfer/fashion_data'
-    annotations_file_train = os.path.join(dir, 'fashion-resize-annotation-train.csv')
-    pairs_file_train = os.path.join(dir, 'example_fashion-resize-pairs-train.csv')
+    dir ='./deepfashion/'
+    # annotations_file_train = os.path.join(dir, 'fashion-resize-annotation-train.csv')
+    # pairs_file_train = os.path.join(dir, 'example_fashion-resize-pairs-train.csv')
 
-    df_keypoints = pd.read_csv(annotations_file_train, sep=':')
-    df = filter_not_valid(df_keypoints)
-    print ('Compute pair dataset for train...')
-    pairs_df_train = make_pairs(df)
-    print ('Number of pairs: %s' % len(pairs_df_train))
-    pairs_df_train.to_csv(pairs_file_train, index=False)
+    # df_keypoints = pd.read_csv(annotations_file_train, sep=':')
+    # df = filter_not_valid(df_keypoints)
+    # print ('Compute pair dataset for train...')
+    # pairs_df_train = make_pairs(df)
+    # print ('Number of pairs: %s' % len(pairs_df_train))
+    # pairs_df_train.to_csv(pairs_file_train, index=False)
 
-    annotations_file_test = os.path.join(dir, 'fashion-resize-annotation-test.csv')
-    pairs_file_test = os.path.join(dir, 'example_fashion-resize-pairs-test.csv')
+    annotations_file_test = os.path.join(dir, 'fashion-resize-pairs-test.csv')
+    pairs_file_test = os.path.join(dir, 'example-fashion-resize-pairs-test.csv')
 
     print ('Compute pair dataset for test...')
     df_keypoints = pd.read_csv(annotations_file_test, sep=':')

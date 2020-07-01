@@ -4,8 +4,7 @@ import ntpath
 import time
 import visdom
 
-#from . import util
-#from . import html
+from ADGAN.util import util, html
 
 
 class Visualizer():
