@@ -1,15 +1,16 @@
 import torch.utils.data
-from data.base_data_loader import BaseDataLoader
+from ADGAN.data.base_data_loader import BaseDataLoader
 
 
 def CreateDataset(opt):
     dataset = None
     
     if opt.dataset_mode == 'keypoint':
-        from data.keypoint import KeyDataset
+        from ADGAN.data.keypoint import KeyDataset
         dataset = KeyDataset()
     elif opt.dataset_mode == 'keypoint_mix':
-        from data.keypoint_mix import KeyDataset
+    #    from ADGAN.data.keypoint_mix import KeyDataset
+        from ADGAN.data.keypoint import KeyDataset
         dataset = KeyDataset()
     else:
         raise ValueError("Dataset [%s] not recognized." % opt.dataset_mode)

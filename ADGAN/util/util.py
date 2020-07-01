@@ -1,13 +1,16 @@
-from __future__ import print_function
+#from __future__ import print_function
 import torch
 import numpy as np
-from PIL import Image
 import inspect, re
-import numpy as np
 import os
 import collections
+from PIL import Image
 
-from skimage.draw import circle, line_aa, polygon
+import skimage
+import skimage.util
+import skimage.data
+#from skimage import draw
+#from skimage.draw import circle, line_aa, polygon
 
 # Converts a Tensor into a Numpy array
 # |imtype|: the desired type of the converted numpy array
@@ -75,14 +78,14 @@ def draw_pose_from_cords(pose_joints, img_size, radius=2, draw_joints=True):
             to_missing = pose_joints[t][0] == MISSING_VALUE or pose_joints[t][1] == MISSING_VALUE
             if from_missing or to_missing:
                 continue
-            yy, xx, val = line_aa(pose_joints[f][0], pose_joints[f][1], pose_joints[t][0], pose_joints[t][1])
+            yy, xx, val = skimage.draw.line_aa(pose_joints[f][0], pose_joints[f][1], pose_joints[t][0], pose_joints[t][1])
             colors[yy, xx] = np.expand_dims(val, 1) * 255
             mask[yy, xx] = True
 
     for i, joint in enumerate(pose_joints):
         if pose_joints[i][0] == MISSING_VALUE or pose_joints[i][1] == MISSING_VALUE:
             continue
-        yy, xx = circle(joint[0], joint[1], radius=radius, shape=img_size)
+        yy, xx = skimage.draw.circle(joint[0], joint[1], radius=radius, shape=img_size)
         colors[yy, xx] = COLORS[i]
         mask[yy, xx] = True
 

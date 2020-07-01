@@ -15,7 +15,7 @@ class BaseModel(nn.Module):
     def initialize(self, opt):
         self.opt = opt
         self.gpu_ids = opt.gpu_ids
-        self.isTrain = opt.isTrain
+        self.isTrain = False # opt.isTrain
         self.Tensor = torch.cuda.FloatTensor if self.gpu_ids else torch.Tensor
         self.save_dir = os.path.join(opt.checkpoints_dir, opt.name)
         self.vgg_path = os.path.join(os.path.abspath(os.path.dirname(opt.dataroot)), 'vgg19-dcbb9e9d.pth')

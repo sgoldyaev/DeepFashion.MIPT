@@ -8,7 +8,7 @@ import numpy as np
 import torch.nn.functional as F
 
 import sys
-from models.model_adgen import ADGen
+from ADGAN.models.model_adgen import ADGen
 
 
 # added

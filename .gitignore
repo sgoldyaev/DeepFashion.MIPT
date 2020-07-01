@@ -1,2 +1,6 @@
+checkpoints/
+deepfashion/
+results/
+data/
 env/
 .vscode/

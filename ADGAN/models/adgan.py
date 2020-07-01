@@ -4,13 +4,13 @@ import os
 from collections import OrderedDict
 from torch.autograd import Variable
 import itertools
-import util.util as util
-from util.image_pool import ImagePool
+import ADGAN.util.util as util
+from ADGAN.util.image_pool import ImagePool
 from .base_model import BaseModel
 from . import networks
 # losses
-from losses.L1_plus_perceptualLoss import L1_plus_perceptualLoss
-from losses.CX_style_loss import CXLoss
+from ADGAN.losses.L1_plus_perceptualLoss import L1_plus_perceptualLoss
+from ADGAN.losses.CX_style_loss import CXLoss
 from .vgg import VGG
 
 
@@ -82,7 +82,7 @@ class TransferModel(BaseModel):
             elif opt.L1_type == 'l1_plus_perL1':
                 self.criterionL1 = L1_plus_perceptualLoss(opt.lambda_A, opt.lambda_B, opt.perceptual_layers, self.gpu_ids, opt.percep_is_l1)
             else:
-                raise Excption('Unsurportted type of L1!')
+                raise Exception('Unsurportted type of L1!')
 
             if opt.use_cxloss:
                 self.CX_loss = CXLoss(sigma=0.5)

@@ -1,38 +1,52 @@
 import os
+import numpy as np
+#from sklearn.model_selection import train_test_split
 
 # path for downloaded fashion images
-root_fashion_dir = 'your_path/deepfashion'
+root_fashion_dir = 'C:\\git\\DeepFashion.MIPT\\deepfashion\\fashion'
+output_fashion_dir = 'C:\\git\\DeepFashion.MIPT\\deepfashion\\fashion_resize'
 assert len(root_fashion_dir) > 0, 'please give the path of raw deep fashion dataset!'
 
-train_images = []
-train_f = open(os.path.join(root_fashion_dir,'train.lst'), 'r')
-for lines in train_f:
-	lines = lines.strip()
-	if lines.endswith('.jpg'):
-		train_images.append(lines)
+input_images = {}
+for f1 in os.listdir(root_fashion_dir):
+	for f2 in os.listdir(os.path.join(root_fashion_dir, f1)):
+		for f3 in os.listdir(os.path.join(root_fashion_dir, f1, f2)):
+			for f4 in os.listdir(os.path.join(root_fashion_dir, f1, f2, f3)):
+				input_images['fashion{}{}{}{}'.format(f1, f2, f3, f4)] = os.path.join(root_fashion_dir, f1, f2, f3, f4)
 
-test_images = []
-test_f = open(os.path.join(root_fashion_dir,'test.lst'), 'r')
-for lines in test_f:
-	lines = lines.strip()
-	if lines.endswith('.jpg'):
-		test_images.append(lines)
+#train_images, test_images = train_test_split(input_images.keys, test_size=0.20, random_state=42)
+train_images, test_images = input_images, input_images
 
-train_path = os.path.join(root_fashion_dir,'train')
+train_path = os.path.join(output_fashion_dir,'train')
 if not os.path.exists(train_path):
 	os.mkdir(train_path)
 
-for item in train_images:
-	from_ = os.path.join(root_fashion_dir, item)
-	to_ = os.path.join(train_path, item)
-	os.system('cp %s %s' %(from_, to_))
-
-
-test_path = os.path.join(root_fashion_dir,'test')
+test_path = os.path.join(output_fashion_dir, 'test')
 if not os.path.exists(test_path):
 	os.mkdir(test_path)
+'''
+print ('train images:')
+x = 0
+with open(output_fashion_dir + '\\train.lst', 'a') as the_file:
+	for (n, f) in train_images.items():
+		to_ = os.path.join(train_path, n)
+		os.system('cp %s %s' %(f, to_))
+		the_file.write(n + '\n')
 
-for item in test_images:
-	from_ = os.path.join(root_fashion_dir, item)
-	to_ = os.path.join(test_path, item)
-	os.system('cp %s %s' %(from_, to_))
+		x+=1
+		if x>10:
+			break
+'''
+print ('test images:')
+x = 0
+with open(output_fashion_dir + '\\test.lst', 'a') as the_file:
+	for (n, f) in test_images.items():
+		to_ = os.path.join(test_path, n)
+		os.system('cp %s %s' %(f, to_))
+		#the_file.write(n + '\n')
+
+		# x+=1
+		# if x>10:
+		# 	break
+
+print ('finish')

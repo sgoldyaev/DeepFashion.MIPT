@@ -2,8 +2,10 @@ import numpy as np
 import os
 import ntpath
 import time
-from . import util
-from . import html
+import visdom
+
+#from . import util
+#from . import html
 
 
 class Visualizer():
@@ -16,7 +18,6 @@ class Visualizer():
         self.opt = opt
         self.saved = False
         if self.display_id > 0:
-            import visdom
             self.vis = visdom.Visdom(port=opt.display_port)
 
         if self.use_html:
