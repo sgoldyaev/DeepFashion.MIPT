@@ -4,7 +4,7 @@ itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe>=1.0
 Werkzeug==0.14.1
-setuptools==47.3.1
+setuptools==65.5.1
 torch==1.5.1 
 torchvision==0.6.1
 scikit-image==0.17.2
